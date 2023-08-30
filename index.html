@@ -4,8 +4,61 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rock Paper or Scissors</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="shortcut icon" href="./img/favicon.svg" type="image/x-icon" />
   </head>
   <body>
+    <div class="header">
+      <h1><span>ROCK</span> <span>PAPER</span> <span>SCISSORS</span></h1>
+    </div>
+    <div class="content">
+      <div class="text">
+        <h2 id="text-user">Choose your weapon</h2>
+        <p id="text-support">First to score 5 points wins the game</p>
+      </div>
+
+      <div class="counter">
+        <div>
+          <img
+            id="player-img"
+            src="./img/question.svg"
+            height="auto"
+            width="100"
+          />
+          <p>Player: <span id="player">0</span></p>
+        </div>
+        <div>
+          <img
+            id="computer-img"
+            src="./img/question.svg"
+            height="auto"
+            width="100"
+          />
+          <p>Computer: <span id="computer">0</span></p>
+        </div>
+      </div>
+
+      <div class="selection">
+        <div class="card" data-id="scissors">
+          <img src="./img/scissors.svg" alt="scissors" />
+        </div>
+        <div class="card" data-id="rock">
+          <img src="./img/rock.svg" alt="rock" />
+        </div>
+        <div class="card" data-id="paper">
+          <img src="./img/paper.svg" alt="paper" />
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      JosepDeveloper on
+      <a href="https://github.com/josepDeveloper/" target="_blank"
+        ><img
+          class="github"
+          src="./img/GitHub_Logo_White.png"
+          alt="Logo GitHub"
+      /></a>
+    </div>
     <script src="./index.js"></script>
   </body>
 </html>

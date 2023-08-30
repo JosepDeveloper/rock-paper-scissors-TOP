@@ -1,3 +1,8 @@
+const $ = (element) => document.querySelector(element);
+const $$ = (element) => document.querySelectorAll(element);
+
+const ELECTIONS_GAME = ["paper", "rock", "scissors"];
+
 const REQUERIMENT_WIN = {
   rock: "scissors",
   scissors: "paper",
@@ -6,10 +11,22 @@ const REQUERIMENT_WIN = {
 
 const VALUES = {
   playerWin: "win",
-  payerLose: "lose",
+  playerLose: "lose",
   playerTied: "tied",
-  unknown: "unknown",
 };
+
+const counter = {
+  player: 0,
+  computer: 0,
+};
+
+const $cards = $$(".card");
+const $playerImg = $("#player-img");
+const $computerImg = $("#computer-img");
+const $testUser = $("#text-user");
+const $counterPlayer = $("#player");
+const $counterComputer = $("#computer");
+const $textSupport = $("#text-support");
 
 const getComputerChoise = () => {
   const GAME_OPCIONS = Object.values(REQUERIMENT_WIN);
@@ -21,58 +38,69 @@ const getComputerChoise = () => {
 const roundOfGame = (playerSelection, computerSelection) => {
   const playerToLowerCase = playerSelection.toLowerCase();
 
-  if (!REQUERIMENT_WIN.hasOwnProperty(playerToLowerCase)) return VALUES.unknown;
-
   if (playerToLowerCase === computerSelection) return VALUES.playerTied;
 
   if (REQUERIMENT_WIN[playerToLowerCase] === computerSelection) {
     return VALUES.playerWin;
-  } else {
-    return VALUES.payerLose;
+  }
+
+  return VALUES.playerLose;
+};
+
+const resetGame = () => {
+  if (counter.computer === 5) {
+    alert("You lose 😭!");
+  }
+
+  if (counter.player === 5) {
+    alert("User won 🥳!");
+  }
+  if (counter.computer === 5 || counter.player === 5) {
+    counter.player = 0;
+    counter.computer = 0;
+    $playerImg.setAttribute("src", `./img/question.svg`);
+    $computerImg.setAttribute("src", `./img/question.svg`);
+    $testUser.innerText = "Choose your weapon";
+    $textSupport.innerText = `First to score 5 points wins the game`;
+    $counterPlayer.innerText = counter.player;
+    $counterComputer.innerText = counter.computer;
   }
 };
 
-const game = () => {
-  let inputUser = "";
-  let computerChoise = 0;
-  const counter = {
-    user: 0,
-    computer: 0,
-  };
+$cards.forEach((card) => {
+  card.addEventListener("click", () => {
+    const playerDesision = card.getAttribute("data-id");
+    const computerDecision = getComputerChoise();
+    const roundResult = roundOfGame(playerDesision, computerDecision);
 
-  for (let i = 0; i <= 4; i++) {
-    inputUser = prompt("Choose: Rock, Paper or Scissors");
-    computerChoise = getComputerChoise();
+    ELECTIONS_GAME.forEach((element) => {
+      if (playerDesision === element) {
+        $playerImg.setAttribute("src", `./img/${element}.svg`);
+      }
 
-    const result = roundOfGame(inputUser, computerChoise);
+      if (computerDecision === element) {
+        $computerImg.setAttribute("src", `./img/${element}.svg`);
+      }
+    });
 
-    if (result === VALUES.unknown) {
-      console.log("Valor invalido");
-      break;
-    }
-
-    if (result === VALUES.playerTied) {
-      console.log(`the computer chose ${computerChoise}`);
-      console.log(`tied!! the two have chosen ${inputUser.toLowerCase()}`);
-      continue;
-    }
-
-    if (result === VALUES.playerWin) {
-      console.log(`the computer chose ${computerChoise}`);
-      console.log(
-        `You Win!! ${inputUser.toLowerCase()} beats ${computerChoise}`
-      );
-      counter.user++;
-    } else {
-      console.log(`the computer chose ${computerChoise}`);
-      console.log(
-        `You Lose!! ${computerChoise} beats ${inputUser.toLowerCase()}`
-      );
+    if (roundResult === VALUES.playerLose) {
       counter.computer++;
+      $testUser.innerText = "You lose!";
+      $counterComputer.innerText = counter.computer;
+      $textSupport.innerText = `${playerDesision} is beaten by ${computerDecision}`;
     }
-  }
+    if (roundResult === VALUES.playerWin) {
+      counter.player++;
+      $testUser.innerText = "You won!";
+      $counterPlayer.innerText = counter.player;
+      $textSupport.innerText = `${playerDesision} beats ${computerDecision}`;
+    }
 
-  console.log(counter);
-};
+    if (roundResult === VALUES.playerTied) {
+      $testUser.innerText = "It's a tie!";
+      $textSupport.innerText = `${computerDecision} ties with ${playerDesision}`;
+    }
 
-game();
+    resetGame();
+  });
+});
